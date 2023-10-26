@@ -1,0 +1,8 @@
+inurl:admin*
+inurl:ftp
+filetype:log
+filetype:xls
+filetype:csv
+filetype:sql
+intitle:"index of"
+intitle:”index of” password.
