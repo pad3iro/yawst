@@ -15,6 +15,7 @@ URL=$1;
 
 # Tools paths
 TOOLSDIR=$BASEDIR/tools;
+RESOURCESDIR=$BASEDIR/resources;
 
 FFUF=$TOOLSDIR/ffuf;
 TWA=$TOOLSDIR/twa;
@@ -47,17 +48,12 @@ function run_cmd() {
 }
 
 function run_nmap() {
-    
-    NMAP_TARGET=$(echo "$URL" | sed -e 's/^http\(\|s\):\/\///g' | sed -e 's/\/.*//');
-    
-    NMAP_CMD=""$NMAP" "$NMAP_TARGET" -v -Pn -p 80,8080,443 --script http-apache-negotiation,http-apache-server-status,http-aspnet-debug,http-auth,http-auth-finder,http-config-backup,http-cors,http-cross-domain-policy,http-default-accounts,http-enum,http-errors,http-generator,http-iis-short-name-brute,http-iis-webdav-vuln,http-internal-ip-disclosure,,http-mcmp,http-method-tamper,http-methods,http-ntlm-info,http-open-proxy,http-open-redirect,http-passwd,http-php-version,http-phpself-xss,http-trace,http-traceroute,http-vuln-cve2012-1823,http-vuln-cve2015-1635 -oA "$WORKING_DIR"/nmap-http --stats-every 10s";
-    
+    NMAP_CMD=""$NMAP" "$HOSTNAME" -v -Pn -p 80,8080,443 --script http-apache-negotiation,http-apache-server-status,http-aspnet-debug,http-auth,http-auth-finder,http-config-backup,http-cors,http-cross-domain-policy,http-default-accounts,http-enum,http-errors,http-generator,http-iis-short-name-brute,http-iis-webdav-vuln,http-internal-ip-disclosure,,http-mcmp,http-method-tamper,http-methods,http-ntlm-info,http-open-proxy,http-open-redirect,http-passwd,http-php-version,http-phpself-xss,http-trace,http-traceroute,http-vuln-cve2012-1823,http-vuln-cve2015-1635 -oA "$WORKING_DIR"/nmap-http --stats-every 10s";
     run_cmd "$NMAP_CMD";
 }
 
 function run_nikto() {
     NIKTO_CMD=""$NIKTO" -h "$URL" -timeout 3 -maxtime 7m -output "$WORKING_DIR"/nikto.txt";
-    
     run_cmd "$NIKTO_CMD";
 }
 
@@ -67,8 +63,7 @@ function run_wafw00f() {
 }
 
 function run_twa() {
-    TWA_TARGET=$(echo "$URL" | sed -e 's/^http\(\|s\):\/\///g' | sed -e 's/\/.*//');
-    TWA_CMD=""$TWA" -dw "$TWA_TARGET"";
+    TWA_CMD=""$TWA" -dw "$HOSTNAME"";
     run_cmd "$TWA_CMD";
 }
 
@@ -83,14 +78,17 @@ function run_whatweb(){
 }
 
 function run_ffuf(){
-    FFUF_CMD=""$FFUF" -w wordlists/directory-list-lowercase-2.3-small.txt -u "$URL"/FUZZ";
+    FFUF_CMD=""$FFUF" -w "$RESOURCESDIR"/wordlists/directory-list-lowercase-2.3-small.txt -u "$URL"/FUZZ";
     run_cmd "$FFUF_CMD";
 }
 
 # Create working directory based on TARGET name
-echo -e "$ORANGE""[*] Creating working directory for output: ./$TARGET-$TIME""$NC";
-mkdir ./"$URL"-"$TIME";
-WORKING_DIR="$TARGET"-"$TIME";
+HOSTNAME=$(echo "$URL" | sed -e 's/^http\(\|s\):\/\///g' | sed -e 's/\/.*//');
+WORKING_DIR="$HOSTNAME"-"$TIME";
+echo -e "$ORANGE""[*] Creating working directory for output: ./$WORKING_DIR""$NC";
+mkdir ./"$WORKING_DIR";
+
+
 sleep 1;
 
 run_nmap;
