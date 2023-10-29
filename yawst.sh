@@ -12,7 +12,7 @@ function print_errors(){
     echo -e "$GREEN""[*] Usage: $0 URL\\n""$NC";
     echo -e "$GREEN""[*] The URL is the URL to be scanned.""$NC";
     echo -e "$GREEN""[*] If not running on docker and it is first time usage, run $0 install after setting the basedir in the top of this script""$NC";
-    exit;
+    exit 1;
 }
 
 function run_cmd() {

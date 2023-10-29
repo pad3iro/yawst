@@ -27,6 +27,8 @@ fi
 
 . ./yawst.sh
 
+echo -e "$ORANGE""[*]"$BLUE" Starting scans against target: $WORKING_DIR""$NC";
+
 create_working_dir;
 run_nmap;
 run_nikto;
@@ -36,4 +38,6 @@ run_testssl;
 run_whatweb;
 run_ffuf;
 
-exit;
+echo -e "$ORANGE""[*]"$BLUE" Scans completed""$NC";
+
+exit 0;

@@ -17,10 +17,6 @@ RUN pyinstaller --onefile wafpass/wafpass.py
 FROM ubuntu:latest
 RUN apt update && apt install bash nikto jq curl wget nmap net-tools dnsutils netcat-openbsd python3 perl-base whatweb git bsdmainutils wafw00f -y
 
-WORKDIR /yawst/resources
-ADD wordlists wordlists
-COPY --from=python-build /python-tools/wafpass/payloads payloads
-
 WORKDIR /yawst/tools
 
 COPY --from=go-build /go/bin/ffuf .
@@ -34,6 +30,9 @@ RUN git clone https://github.com/drwetter/testssl.sh.git
 RUN ln -s testssl.sh/testssl.sh testssl
 
 WORKDIR /yawst
+ADD resources resources
+COPY --from=python-build /python-tools/wafpass/payloads payloads
+
 ADD yawst_docker.sh .
 ADD yawst.sh .
 RUN chmod +x yawst_docker.sh
