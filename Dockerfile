@@ -34,5 +34,10 @@ RUN git clone https://github.com/drwetter/testssl.sh.git
 RUN ln -s testssl.sh/testssl.sh testssl
 
 WORKDIR /yawst
+ADD yawst_docker.sh .
+ADD yawst.sh .
+RUN chmod +x yawst_docker.sh
+RUN mkdir results
 
-ENTRYPOINT ["tail", "-f", "/dev/null"]
+#ENTRYPOINT ["tail", "-f", "/dev/null"]
+ENTRYPOINT ["./yawst_docker.sh"]
