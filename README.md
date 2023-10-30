@@ -1,9 +1,10 @@
 # Yet Another Web Scanning Toolchain
 
 #### Build and run
-docker build -t yawst .
 
 mkdir -p results
+
+docker build -t yawst .
 
 docker run -v $(pwd)/results:/yawst/results -it yawst https://www.hackthissite.org/
 
