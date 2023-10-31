@@ -66,7 +66,7 @@ function create_working_dir(){
 function create_report(){
     UTILS_PATH="./resources/utils";
     cp "$UTILS_PATH"/report.html $WORKING_DIR/report.html;
-    sed -i "s/%TARGET%/""$URL""/g" $WORKING_DIR/report.html;
+    sed -i "s|%TARGET%|""$URL""|g" $WORKING_DIR/report.html;
     "$UTILS_PATH"/converter.py $WORKING_DIR/twa.csv $WORKING_DIR/nmap.xml;
     "$UTILS_PATH"/converter.py $WORKING_DIR/*.json;
 }
