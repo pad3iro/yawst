@@ -22,7 +22,7 @@ function run_cmd() {
 }
 
 function run_nmap() {
-    NMAP_CMD=""$NMAP" "$HOSTNAME" -v -Pn -p 80,8080,443 --script http-apache-negotiation,http-apache-server-status,http-aspnet-debug,http-auth,http-auth-finder,http-config-backup,http-cors,http-cross-domain-policy,http-default-accounts,http-enum,http-errors,http-generator,http-iis-short-name-brute,http-iis-webdav-vuln,http-internal-ip-disclosure,,http-mcmp,http-method-tamper,http-methods,http-ntlm-info,http-open-proxy,http-open-redirect,http-passwd,http-php-version,http-phpself-xss,http-trace,http-traceroute,http-vuln-cve2012-1823,http-vuln-cve2015-1635 -oA "$WORKING_DIR"/nmap";
+    NMAP_CMD=""$NMAP" "$HOSTNAME" -v -Pn -p 80,8080,443 --script http-apache-negotiation,http-apache-server-status,http-aspnet-debug,http-auth,http-auth-finder,http-config-backup,http-cors,http-cross-domain-policy,http-default-accounts,http-enum,http-errors,http-generator,http-iis-short-name-brute,http-iis-webdav-vuln,http-internal-ip-disclosure,,http-mcmp,http-method-tamper,http-methods,http-ntlm-info,http-open-proxy,http-open-redirect,http-passwd,http-php-version,http-phpself-xss,http-trace,http-traceroute,http-vuln-cve2012-1823,http-vuln-cve2015-1635 -oX "$WORKING_DIR"/nmap";
     run_cmd "$NMAP_CMD";
 }
 
@@ -67,7 +67,8 @@ function create_report(){
     UTILS_PATH="./resources/utils";
     cp "$UTILS_PATH"/report.html $WORKING_DIR/report.html;
     sed -i "s|%TARGET%|""$URL""|g" $WORKING_DIR/report.html;
-    "$UTILS_PATH"/converter.py $WORKING_DIR/twa.csv $WORKING_DIR/nmap.xml;
+    xsltproc $WORKING_DIR/nmap.xml -o $WORKING_DIR/nmap.html
+    "$UTILS_PATH"/converter.py $WORKING_DIR/twa.csv;
     "$UTILS_PATH"/converter.py $WORKING_DIR/*.json;
 }
 

@@ -19,7 +19,7 @@ ADD resources/utils/converter.py converter.py
 RUN pyinstaller --onefile converter.py
 
 FROM ubuntu:latest
-RUN apt update && apt install nikto whatweb wafw00f bash jq nmap net-tools dnsutils netcat-openbsd python3 wget git bsdmainutils -y
+RUN apt update && apt install nikto whatweb wafw00f bash jq nmap net-tools dnsutils netcat-openbsd python3 wget git bsdmainutils xsltproc -y
 
 WORKDIR /yawst/tools
 
