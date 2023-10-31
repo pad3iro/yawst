@@ -43,5 +43,5 @@ ADD yawst.sh .
 RUN chmod +x yawst_docker.sh
 RUN mkdir results
 
-ENTRYPOINT ["tail", "-f", "/dev/null"]
-#ENTRYPOINT ["./yawst_docker.sh"]
+#ENTRYPOINT ["tail", "-f", "/dev/null"]
+ENTRYPOINT ["./yawst_docker.sh"]
