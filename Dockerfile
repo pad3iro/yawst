@@ -19,7 +19,7 @@ ADD resources/utils/converter.py converter.py
 RUN pyinstaller --onefile converter.py
 
 FROM ubuntu:latest
-RUN apt update && apt install nikto whatweb wafw00f bash jq nmap net-tools dnsutils netcat-openbsd python3 wget git bsdmainutils xsltproc -y
+RUN apt update && apt install nikto whatweb wafw00f bash jq nmap net-tools dnsutils netcat-openbsd python3 wget git bsdmainutils xsltproc curl -y
 
 WORKDIR /yawst/tools
 
@@ -43,5 +43,5 @@ ADD yawst.sh .
 RUN chmod +x yawst_docker.sh
 RUN mkdir results
 
-#ENTRYPOINT ["tail", "-f", "/dev/null"]
-ENTRYPOINT ["./yawst_docker.sh"]
+ENTRYPOINT ["tail", "-f", "/dev/null"]
+#ENTRYPOINT ["./yawst_docker.sh"]
