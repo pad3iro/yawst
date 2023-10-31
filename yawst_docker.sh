@@ -40,4 +40,10 @@ run_ffuf;
 
 echo -e "$ORANGE""[*]"$BLUE" Scans completed""$NC";
 
+echo -e "$ORANGE""[*]"$GREEN" Preparing report""$NC";
+
+create_report;
+
+echo -e "$ORANGE""[*]"$GREEN" Report complete""$NC";
+
 exit 0;

@@ -1,0 +1,32 @@
+<html>
+    <head>
+        <title> Yawst scan results</title>
+    </head>
+    <body>
+        <div id="all" style="width: 100%; text-align: center; border: 2px solid black; border-radius: 10px;">
+            <div id="top" style="width: 100%;">
+                <h1>Scan results for %TARGET% </h1>
+            </div>
+            <div id="left" style="width:10%;float: left;line-height: 2;">
+                <br>
+                <a href ="javascript:load_page('ffuf.html');">ffuf</a><br>
+                <a href ="javascript:load_page('wafw00f.html');">wafw00f</a><br>
+                <a href ="javascript:load_page('whatweb.html');">whatweb</a><br>
+                <a href ="javascript:load_page('nmap.html');">nmap</a><br>
+                <a href ="javascript:load_page('nikto.html');">nikto</a><br>
+                <a href ="javascript:load_page('twa.html');">twa</a><br>
+                <a href ="javascript:load_page('testssl.html');">testssl.sh</a><br>
+            </div>
+            <div id="content" style="width:89%; height: 100%; float: left;">
+            </div>
+        </div>
+        <script>
+            function load_page(page)
+            {
+                document.getElementById('content').innerHTML = '<object id=test style="width:100%;height: 100%;" type="text/html" data="' + page + '"</object>';
+            };
+        
+        </script>
+    </body>
+    
+</html>

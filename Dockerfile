@@ -14,8 +14,12 @@ RUN pyinstaller --onefile pagodo/pagodo.py
 RUN git clone https://github.com/wafpassproject/wafpass
 RUN pyinstaller --onefile wafpass/wafpass.py
 
+RUN python3 -m pip install xmltodict json2html
+ADD resources/utils/converter.py converter.py
+RUN pyinstaller --onefile converter.py
+
 FROM ubuntu:latest
-RUN apt update && apt install bash nikto jq curl wget nmap net-tools dnsutils netcat-openbsd python3 perl-base whatweb git bsdmainutils wafw00f -y
+RUN apt update && apt install nikto whatweb wafw00f bash jq nmap net-tools dnsutils netcat-openbsd python3 wget git bsdmainutils -y
 
 WORKDIR /yawst/tools
 
@@ -31,12 +35,13 @@ RUN ln -s testssl.sh/testssl.sh testssl
 
 WORKDIR /yawst
 ADD resources resources
-COPY --from=python-build /python-tools/wafpass/payloads payloads
+COPY --from=python-build /python-tools/wafpass/payloads resources/payloads
+COPY --from=python-build /python-tools/dist/converter resources/utils/converter.py
 
 ADD yawst_docker.sh .
 ADD yawst.sh .
 RUN chmod +x yawst_docker.sh
 RUN mkdir results
 
-#ENTRYPOINT ["tail", "-f", "/dev/null"]
-ENTRYPOINT ["./yawst_docker.sh"]
+ENTRYPOINT ["tail", "-f", "/dev/null"]
+#ENTRYPOINT ["./yawst_docker.sh"]

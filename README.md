@@ -9,7 +9,7 @@ docker build -t yawst .
 docker run -v $(pwd)/results:/yawst/results -it yawst https://www.hackthissite.org/
 
 #### Tools list
-* https://github.com/ffuf/ffuf
+* https://github.com/ffuf/ffuf ( https://github.com/ffuf/ffuf/wiki )
 
 * https://github.com/sullo/nikto
 
