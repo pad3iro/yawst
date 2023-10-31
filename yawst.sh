@@ -22,7 +22,7 @@ function run_cmd() {
 }
 
 function run_nmap() {
-    NMAP_CMD=""$NMAP" "$HOSTNAME" -v -Pn -p 80,8080,443 --script http-apache-negotiation,http-apache-server-status,http-aspnet-debug,http-auth,http-auth-finder,http-config-backup,http-cors,http-cross-domain-policy,http-default-accounts,http-enum,http-errors,http-generator,http-iis-short-name-brute,http-iis-webdav-vuln,http-internal-ip-disclosure,,http-mcmp,http-method-tamper,http-methods,http-ntlm-info,http-open-proxy,http-open-redirect,http-passwd,http-php-version,http-phpself-xss,http-trace,http-traceroute,http-vuln-cve2012-1823,http-vuln-cve2015-1635 -oX "$WORKING_DIR"/nmap";
+    NMAP_CMD=""$NMAP" "$HOSTNAME" -v -Pn -p 80,8080,443 --script http-apache-negotiation,http-apache-server-status,http-aspnet-debug,http-auth,http-auth-finder,http-config-backup,http-cors,http-cross-domain-policy,http-default-accounts,http-enum,http-errors,http-generator,http-iis-short-name-brute,http-iis-webdav-vuln,http-internal-ip-disclosure,,http-mcmp,http-method-tamper,http-methods,http-ntlm-info,http-open-proxy,http-open-redirect,http-passwd,http-php-version,http-phpself-xss,http-trace,http-traceroute,http-vuln-cve2012-1823,http-vuln-cve2015-1635 -oX "$WORKING_DIR"/nmap.xml";
     run_cmd "$NMAP_CMD";
 }
 
@@ -52,7 +52,7 @@ function run_whatweb(){
 }
 
 function run_ffuf(){
-    FFUF_CMD=""$FFUF" -w "$RESOURCES_DIR"/wordlists/directory-list-lowercase-2.3-small.txt -u "$URL"/FUZZ -of html -o "$WORKING_DIR"/ffuf.html";
+    FFUF_CMD=""$FFUF" -w "$RESOURCES_DIR"/wordlists/common.txt -u "$URL"/FUZZ -of html -o "$WORKING_DIR"/ffuf.html";
     run_cmd "$FFUF_CMD";
 }
 
