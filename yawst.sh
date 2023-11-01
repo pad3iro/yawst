@@ -23,11 +23,15 @@ function run_cmd() {
 
 function run_nmap() {
     NMAP_CMD=""$NMAP" "$HOSTNAME" -v -Pn -p 80,8080,443 --script http-apache-negotiation,http-apache-server-status,http-aspnet-debug,http-auth,http-auth-finder,http-config-backup,http-cors,http-cross-domain-policy,http-default-accounts,http-enum,http-errors,http-generator,http-iis-short-name-brute,http-iis-webdav-vuln,http-internal-ip-disclosure,,http-mcmp,http-method-tamper,http-methods,http-ntlm-info,http-open-proxy,http-open-redirect,http-passwd,http-php-version,http-phpself-xss,http-trace,http-traceroute,http-vuln-cve2012-1823,http-vuln-cve2015-1635 -oX "$WORKING_DIR"/nmap.xml";
+    #Fast test mode
+    #NMAP_CMD=""$NMAP" "$HOSTNAME" -v -Pn -p 443 --script http-apache-negotiation -oX "$WORKING_DIR"/nmap.xml";
     run_cmd "$NMAP_CMD";
 }
 
 function run_nikto() {
     NIKTO_CMD=""$NIKTO" -h "$URL" -timeout 3 -maxtime 7m -output "$WORKING_DIR"/nikto.html -Format htm";
+    #Fast test mode
+    #NIKTO_CMD=""$NIKTO" -h "$URL" -timeout 3 -maxtime 2m -output "$WORKING_DIR"/nikto.html -Format htm";
     run_cmd "$NIKTO_CMD";
 }
 
@@ -42,17 +46,19 @@ function run_twa() {
 }
 
 function run_testssl(){
-    TESTSSL_CMD=""$TESTSSL" --quiet  -oH "$WORKING_DIR"/testssl.html --warnings off "$URL"";
+    TESTSSL_CMD=""$TESTSSL" --quiet -oH "$WORKING_DIR"/testssl.html --warnings off "$URL"";
     run_cmd "$TESTSSL_CMD";
 }
 
 function run_whatweb(){
-    WHATWEB_CMD=""$WHATWEB" "$URL" --log-json-verbose="$WORKING_DIR"/whatweb.json";
+    WHATWEB_CMD=""$WHATWEB" "$URL" -U 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36' --log-json="$WORKING_DIR"/whatweb.json";
     run_cmd "$WHATWEB_CMD";
 }
 
 function run_ffuf(){
     FFUF_CMD=""$FFUF" -w "$RESOURCES_DIR"/wordlists/common.txt -u "$URL"/FUZZ -of html -o "$WORKING_DIR"/ffuf.html";
+    #Fast Test mode
+    #FFUF_CMD=""$FFUF" -w "$RESOURCES_DIR"/wordlists/log_files_only.txt -u "$URL"/FUZZ -of html -o "$WORKING_DIR"/ffuf.html";
     run_cmd "$FFUF_CMD";
 }
 
@@ -69,6 +75,13 @@ function create_report(){
     sed -i "s|%TARGET%|""$URL""|g" $WORKING_DIR/report.html;
     xsltproc $WORKING_DIR/nmap.xml -o $WORKING_DIR/nmap.html
     "$UTILS_PATH"/converter.py $WORKING_DIR/twa.csv;
-    "$UTILS_PATH"/converter.py $WORKING_DIR/*.json;
+    "$UTILS_PATH"/converter.py $WORKING_DIR/twa.json $WORKING_DIR/wafw00f.json;
+    "$UTILS_PATH"/whatweb_to_html.py $WORKING_DIR/whatweb.json;
+    perl -0777 -i -pe 's/<nav>.*<\/nav>//igs' $WORKING_DIR/ffuf.html;
+    perl -0777 -i -pe "s/<th>$HOSTNAME<\/th>//igs" $WORKING_DIR/twa.html;
+    perl -0777 -i -pe "s/<tr><td>PASS/<tr bgcolor=\"darkseagreen\"><td>PASS/igs" $WORKING_DIR/twa.html;
+    perl -0777 -i -pe "s/<tr><td>FAIL/<tr bgcolor=\"indianred\"><td>FAIL/igs" $WORKING_DIR/twa.html;
+    perl -0777 -i -pe "s/<tr><td>MEH/<tr bgcolor=\"lightsalmon\"><td>MEH/igs" $WORKING_DIR/twa.html;
+    perl -0777 -i -pe "s/<tr><td>SKIP/<tr bgcolor=\"lightsteelblue\"><td>SKIP/igs" $WORKING_DIR/twa.html;
 }
 

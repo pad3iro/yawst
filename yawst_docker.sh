@@ -16,7 +16,7 @@ NIKTO=$(command -v nikto);
 WHATWEB=$(command -v whatweb);
 WAFW00F=$(command -v wafw00f);
 
-TIME=$(date +%T);
+TIME=$(date '+%y%m%d_%H%M%S');
 
 # Script arguments
 URL=$1;
@@ -40,10 +40,10 @@ run_ffuf;
 
 echo -e "$ORANGE""[*]"$BLUE" Scans completed""$NC";
 
-echo -e "$ORANGE""[*]"$GREEN" Preparing report""$NC";
+echo -e "$ORANGE""[*]"$BLUE" Preparing report""$NC";
 
 create_report;
 
-echo -e "$ORANGE""[*]"$GREEN" Report complete""$NC";
+echo -e "$ORANGE""[*]"$BLUE" Report complete""$NC";
 
 exit 0;

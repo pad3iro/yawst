@@ -14,9 +14,11 @@ def make_json_from_csv(csvFile, csvkey="domain"):
     data = {}
     with open(csvFile, encoding='utf-8') as csvf:
         csvReader = csv.DictReader(csvf)
-         
+
         for rows in csvReader:
             key = rows[csvkey]
+            if key not in data:
+                data[key] = []
             data[key].append(rows)
  
     with open(jsonFile, 'w', encoding='utf-8') as jsonf:
