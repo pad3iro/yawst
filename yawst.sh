@@ -56,7 +56,7 @@ function run_whatweb(){
 }
 
 function run_ffuf(){
-    FFUF_CMD=""$FFUF" -w "$RESOURCES_DIR"/wordlists/common.txt -u "$URL"/FUZZ -of html -o "$WORKING_DIR"/ffuf.html";
+    FFUF_CMD=""$FFUF" -w "$RESOURCES_DIR"/wordlists/common_small.txt -u "$URL"/FUZZ -of html -o "$WORKING_DIR"/ffuf.html";
     #Fast Test mode
     #FFUF_CMD=""$FFUF" -w "$RESOURCES_DIR"/wordlists/log_files_only.txt -u "$URL"/FUZZ -of html -o "$WORKING_DIR"/ffuf.html";
     run_cmd "$FFUF_CMD";

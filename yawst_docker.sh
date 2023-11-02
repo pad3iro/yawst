@@ -18,14 +18,17 @@ WAFW00F=$(command -v wafw00f);
 
 TIME=$(date '+%y%m%d_%H%M%S');
 
+. ./yawst.sh
+
 # Script arguments
 URL=$1;
 
 if [[ "$URL" == "" ]]; then
-    print_errors;
+    echo -e "$ORANGE""[*]"$RED" No target provided, switching to manual mode""$NC";
+    echo -e "$ORANGE""[*]"$BLUE" Run $ docker exec -it \$(docker ps | grep yawst | head -1 | cut -d ' ' -f1) /bin/bash ""$NC";
+    /bin/bash;
+    exit 0;
 fi
-
-. ./yawst.sh
 
 echo -e "$ORANGE""[*]"$BLUE" Starting scans against target: $WORKING_DIR""$NC";
 

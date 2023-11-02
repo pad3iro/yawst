@@ -6,12 +6,12 @@ RUN apt update && apt install git python3 python3-setuptools python3-pip -y
 
 WORKDIR /python-tools
 
-RUN git clone https://github.com/opsdisk/pagodo.git
+RUN git clone --depth 1 https://github.com/opsdisk/pagodo.git
 RUN pip install -r pagodo/requirements.txt
 RUN python3 -m pip install pyinstaller
 RUN pyinstaller --onefile pagodo/pagodo.py
 
-RUN git clone https://github.com/wafpassproject/wafpass
+RUN git clone --depth 1 https://github.com/wafpassproject/wafpass
 RUN pyinstaller --onefile wafpass/wafpass.py
 
 RUN python3 -m pip install xmltodict json2html
@@ -24,19 +24,12 @@ RUN pyinstaller --onefile whatweb_to_html.py
 FROM ubuntu:latest
 RUN apt update && apt install nikto whatweb wafw00f bash jq nmap net-tools dnsutils netcat-openbsd python3 wget git bsdmainutils xsltproc curl -y
 
-WORKDIR /yawst/tools
-
-COPY --from=go-build /go/bin/ffuf .
-COPY --from=python-build /python-tools/dist/pagodo .
-COPY --from=python-build /python-tools/dist/wafpass .
-
-RUN wget https://raw.githubusercontent.com/trailofbits/twa/master/twa
-RUN chmod +x twa
-
-RUN git clone https://github.com/drwetter/testssl.sh.git
-RUN ln -s testssl.sh/testssl.sh testssl
-
 WORKDIR /yawst
+
+COPY --from=go-build /go/bin/ffuf ./tools/
+COPY --from=python-build /python-tools/dist/pagodo ./tools/
+COPY --from=python-build /python-tools/dist/wafpass ./tools/
+
 ADD resources resources
 COPY --from=python-build /python-tools/wafpass/payloads resources/payloads
 COPY --from=python-build /python-tools/dist/converter resources/utils/converter.py
@@ -44,8 +37,18 @@ COPY --from=python-build /python-tools/dist/whatweb_to_html resources/utils/what
 
 ADD yawst_docker.sh .
 ADD yawst.sh .
-RUN chmod +x yawst_docker.sh
+
 RUN mkdir results
 
-#ENTRYPOINT ["tail", "-f", "/dev/null"]
+RUN groupadd -r yawst && useradd -r -g yawst yawst && chown -R yawst:yawst .
+USER yawst:yawst
+
+RUN wget https://raw.githubusercontent.com/trailofbits/twa/master/twa -P ./tools/
+RUN chmod +x ./tools/twa
+
+RUN git clone --depth 1 https://github.com/drwetter/testssl.sh.git ./tools/testssl.sh
+RUN ln -s ./tools/testssl.sh/testssl.sh ./tools/testssl
+
+RUN chmod +x yawst_docker.sh
+
 ENTRYPOINT ["./yawst_docker.sh"]

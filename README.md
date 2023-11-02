@@ -2,7 +2,7 @@
 
 #### Build and run
 
-mkdir -p results
+mkdir -p results; chmod 777 results; #to be writable by the container
 
 docker build -t yawst .
 
