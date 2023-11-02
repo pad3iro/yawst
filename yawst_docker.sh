@@ -30,7 +30,7 @@ if [[ "$URL" == "" ]]; then
     exit 0;
 fi
 
-echo -e "$ORANGE""[*]"$BLUE" Starting scans against target: $WORKING_DIR""$NC";
+echo -e "$ORANGE""[*]"$BLUE" Starting scans against target: $URL""$NC";
 
 create_working_dir;
 run_nmap;
