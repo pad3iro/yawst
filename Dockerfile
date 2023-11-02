@@ -47,7 +47,7 @@ RUN wget https://raw.githubusercontent.com/trailofbits/twa/master/twa -P ./tools
 RUN chmod +x ./tools/twa
 
 RUN git clone --depth 1 https://github.com/drwetter/testssl.sh.git ./tools/testssl.sh
-RUN ln -s ./tools/testssl.sh/testssl.sh ./tools/testssl
+RUN ln -s /yawst/tools/testssl.sh/testssl.sh /yawst/tools/testssl
 
 RUN chmod +x yawst_docker.sh
 
