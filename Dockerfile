@@ -18,8 +18,8 @@ RUN python3 -m pip install xmltodict json2html
 ADD resources/utils/converter.py converter.py
 RUN pyinstaller --onefile converter.py
 
-ADD resources/utils/whatweb_to_html.py whatweb_to_html.py
-RUN pyinstaller --onefile whatweb_to_html.py
+RUN git clone --depth 1 https://github.com/pad3iro/whatweb_html_output.git
+RUN pyinstaller --onefile whatweb_html_output/whatweb_json_to_html.py
 
 FROM ubuntu:latest
 RUN apt update && apt install nikto whatweb wafw00f bash jq nmap net-tools dnsutils netcat-openbsd python3 wget git bsdmainutils xsltproc curl -y
@@ -33,7 +33,7 @@ COPY --from=python-build /python-tools/dist/wafpass ./tools/
 ADD resources resources
 COPY --from=python-build /python-tools/wafpass/payloads resources/payloads
 COPY --from=python-build /python-tools/dist/converter resources/utils/converter.py
-COPY --from=python-build /python-tools/dist/whatweb_to_html resources/utils/whatweb_to_html.py
+COPY --from=python-build /python-tools/dist/whatweb_json_to_html resources/utils/whatweb_json_to_html.py
 
 ADD yawst_docker.sh .
 ADD yawst.sh .

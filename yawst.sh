@@ -76,7 +76,7 @@ function create_report(){
     xsltproc $WORKING_DIR/nmap.xml -o $WORKING_DIR/nmap.html
     "$UTILS_PATH"/converter.py $WORKING_DIR/twa.csv;
     "$UTILS_PATH"/converter.py $WORKING_DIR/twa.json $WORKING_DIR/wafw00f.json;
-    "$UTILS_PATH"/whatweb_to_html.py $WORKING_DIR/whatweb.json;
+    "$UTILS_PATH"/whatweb_json_to_html.py $WORKING_DIR/whatweb.json;
     perl -0777 -i -pe 's/<nav>.*<\/nav>//igs' $WORKING_DIR/ffuf.html;
     perl -0777 -i -pe "s/<th>$HOSTNAME<\/th>//igs" $WORKING_DIR/twa.html;
     perl -0777 -i -pe "s/<tr><td>PASS/<tr bgcolor=\"darkseagreen\"><td>PASS/igs" $WORKING_DIR/twa.html;
